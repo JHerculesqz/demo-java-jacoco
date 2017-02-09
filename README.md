@@ -56,13 +56,28 @@ CoverageMonitor输出的是jacoco.exec文件，是一个二进制文件，无法
 （3）停止此服务，因为停止服务后，数据统计结果才记录到jacoco.exec文件中。进入demo-jacoco-lib，运行jacoco-reporter.bat,将demo-java-jacoco目录下的jacoco.exec文件生成相关html到test_report文件夹下，访问index.html即可看到具体的代码覆盖结果。
 
 ####4.注意####
-（1）停止服务后，数据统计结果才记录到jacoco.exec文件中；
+	
+	（1）停止服务后，数据统计结果才记录到jacoco.exec文件中；	
+	（2）重新启动demo-java-jacoco的服务，继续访问，jacoco.exec可以持续记录访问结果。
 
-（2）重新启动demo-java-jacoco的服务，继续访问，jacoco.exec可以持续记录访问结果。
+####5.产品化使用方法####
+	
+	STEP1.代码生成工具以及对应bat生成代码。
+	修改点：生成各个工程的build.gradle中分为测试版和生产版，测试版中生成javaagent的配置
+	潜规则：配置规则包含输出到共享目录，共享目录路径表达所属服务名称
+	STEP2.测试人员进行测试。
+	STEP3.一轮测试完成后，测试人员使用工具生成代码覆盖率报告。
+	工具逻辑：关闭所有服务->读取共享目录各个服务的jacoco.exec->调用JacocoReporter生成各个服务代码覆盖率报告->生成本轮测试的汇总html页面->归档->发送邮件
 
 
 ##reference##
-
-http://www.eclemma.org/jacoco/
-
-http://rensanning.iteye.com/blog/2002371
+	
+	http://www.eclemma.org/jacoco/
+	http://rensanning.iteye.com/blog/2002371
+	
+	http://jworks.nl/2013/06/03/jacoco-code-coverage-with-gradle/
+	http://stackoverflow.com/questions/18106492/gradle-jacoco-code-coverage-then-publish-show-in-jenkins
+	https://github.com/gradle/gradle/blob/master/subprojects/docs/src/samples/testing/jacoco/quickstart/build.gradle
+	
+####TODO####
+研究使用gradle插件
